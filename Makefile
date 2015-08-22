@@ -124,7 +124,7 @@ define MXE_GET_GITHUB_SHA
 endef
 
 # use a minimal whitelist of safe environment variables
-ENV_WHITELIST := PATH LANG MAKE% MXE% %PROXY %proxy LD_LIBRARY_PATH ACLOCAL_PATH
+ENV_WHITELIST := PATH LANG MAKE% MXE% %PROXY %proxy LD_LIBRARY_PATH ACLOCAL_PATH PKG_CONFIG_PATH
 unexport $(filter-out $(ENV_WHITELIST),$(shell env | cut -d '=' -f1))
 
 SHORT_PKG_VERSION = \
