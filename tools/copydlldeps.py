@@ -31,9 +31,7 @@ def is_pe_file(file):
     f.seek(60)
     peoffset = struct.unpack('<L', f.read(4))[0]
     f.seek(peoffset)
-    if f.read(4) != b'PE\0\0':
-        return False  # PE magic number not present
-    return True
+    return f.read(4) == b'PE\0\0'
 
 def get_imports(file):
     f = open(file, 'rb')
@@ -129,7 +127,7 @@ if __name__ == "__main__":
 
     # Map from shortname ('qtcore4.dll') to full path (eg.
     # '/.../mxe/i686-w64-mingw32.shared/qt/bin/QtCore4.dll')
-    available_dlls = dict()
+    available_dlls = {}
     # Remember already copied DLLs (eg 'qtcore4.dll', 'qtgui4.dll')
     copied_dlls    = set()
     # Remember which DLLs must still be checked (eg 'qtnetwork4.dll',
@@ -160,9 +158,7 @@ if __name__ == "__main__":
     while len(dlls_to_copy):
         # We may not change the set during iteration
         for dll_to_copy in dlls_to_copy.copy():
-            if dll_to_copy in copied_dlls:
-                None
-            elif dll_to_copy in not_found_dlls:
+            if dll_to_copy in copied_dlls or dll_to_copy in not_found_dlls:
                 None
             elif dll_to_copy in available_dlls:
                 shutil.copyfile(available_dlls[dll_to_copy],
